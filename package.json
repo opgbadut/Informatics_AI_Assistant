@@ -1,0 +1,27 @@
+{
+  "name": "akademi-bot",
+  "version": "1.0.0",
+  "description": "AkademiBot - Asisten Akademik Mahasiswa Informatika berbasis Gemini AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chatbot",
+    "ai",
+    "gemini",
+    "akademik",
+    "informatika"
+  ],
+  "author": "Naufal",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.2.0"
+  }
+}

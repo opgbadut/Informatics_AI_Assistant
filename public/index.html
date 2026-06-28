@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AkademiBot — Asisten Akademik Mahasiswa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">🎓</div>
+        <div class="logo-text">
+          <span class="logo-title">AkademiBot</span>
+          <span class="logo-sub">Asisten Mahasiswa Informatika</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Mode Unggah</p>
+      <div class="upload-tabs">
+        <button class="upload-tab active" data-mode="text" onclick="setUploadMode('text')">
+          💬 Chat
+        </button>
+        <button class="upload-tab" data-mode="image" onclick="setUploadMode('image')">
+          🖼️ Gambar
+        </button>
+        <button class="upload-tab" data-mode="document" onclick="setUploadMode('document')">
+          📄 Dokumen
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-section" id="file-upload-section" style="display:none;">
+      <p class="sidebar-label">Unggah File</p>
+      <label class="upload-area" id="upload-area">
+        <input type="file" id="file-input" accept="" style="display:none;" onchange="handleFileSelect(event)">
+        <span class="upload-icon">📂</span>
+        <span class="upload-text" id="upload-label-text">Pilih file...</span>
+      </label>
+      <div class="upload-preview" id="upload-preview" style="display:none;">
+        <span class="preview-icon" id="preview-icon">📄</span>
+        <span class="preview-name" id="preview-name"></span>
+        <button class="preview-remove" onclick="removeFile()">✕</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-label">Topik Cepat</p>
+      <div class="quick-topics">
+        <button class="topic-chip" onclick="sendQuickTopic('Jelaskan konsep Big O Notation dan kompleksitas algoritma')">📊 Algoritma</button>
+        <button class="topic-chip" onclick="sendQuickTopic('Jelaskan perbedaan TCP dan UDP dalam jaringan komputer')">🌐 Jaringan</button>
+        <button class="topic-chip" onclick="sendQuickTopic('Apa itu SQL Injection dan bagaimana cara mencegahnya?')">🔐 Keamanan</button>
+        <button class="topic-chip" onclick="sendQuickTopic('Jelaskan perbedaan IaaS, PaaS, dan SaaS dalam cloud computing')">☁️ Cloud</button>
+        <button class="topic-chip" onclick="sendQuickTopic('Bantu saya memahami konsep OOP: class, object, inheritance')">🧱 OOP</button>
+        <button class="topic-chip" onclick="sendQuickTopic('Tips manajemen waktu dan belajar efektif untuk mahasiswa')">⏱️ Tips Belajar</button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="btn-reset" onclick="resetChat()">
+        🔄 Reset Percakapan
+      </button>
+      <div class="model-badge">
+        <span class="model-dot"></span>
+        gemini-2.5-flash
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Chat Area -->
+  <main class="chat-main">
+    <!-- Header -->
+    <header class="chat-header">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="header-info">
+        <h1 class="header-title">AkademiBot</h1>
+        <span class="header-status" id="header-status">
+          <span class="status-dot"></span> Online
+        </span>
+      </div>
+      <div class="header-actions">
+        <span class="msg-counter" id="msg-counter" style="display:none;">0 pesan</span>
+      </div>
+    </header>
+
+    <!-- Chat Messages -->
+    <div class="chat-body" id="chat-body">
+      <!-- Welcome Message -->
+      <div class="welcome-container" id="welcome-container">
+        <div class="welcome-avatar">🤖</div>
+        <h2 class="welcome-title">Halo! Saya AkademiBot 👋</h2>
+        <p class="welcome-desc">Asisten akademik siap membantu kamu belajar pemrograman, debugging, konsep kuliah informatika, hingga tips nulis laporan. Mau mulai dari mana?</p>
+        <div class="welcome-suggestions">
+          <button class="suggestion-card" onclick="sendQuickTopic('Tolong debug kode ini: ...')">
+            <span>🐛</span>
+            <span>Debug Kode</span>
+          </button>
+          <button class="suggestion-card" onclick="sendQuickTopic('Jelaskan konsep rekursi dengan contoh sederhana')">
+            <span>📚</span>
+            <span>Jelaskan Konsep</span>
+          </button>
+          <button class="suggestion-card" onclick="sendQuickTopic('Buatkan contoh soal dan pembahasan tentang sorting algorithm')">
+            <span>📝</span>
+            <span>Latihan Soal</span>
+          </button>
+          <button class="suggestion-card" onclick="sendQuickTopic('Bantu saya membuat outline laporan praktikum')">
+            <span>📋</span>
+            <span>Buat Outline</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages akan muncul di sini -->
+      <div id="messages-container"></div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chat-input-area">
+      <!-- File preview bar (shown when file selected) -->
+      <div class="input-file-bar" id="input-file-bar" style="display:none;">
+        <span id="input-file-icon">📄</span>
+        <span id="input-file-name"></span>
+        <button onclick="removeFile()" class="remove-file-btn">✕</button>
+      </div>
+
+      <div class="input-wrapper">
+        <textarea
+          id="chat-input"
+          class="chat-input"
+          placeholder="Tanya sesuatu... (Shift+Enter untuk baris baru)"
+          rows="1"
+          onkeydown="handleKeyDown(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <div class="input-actions">
+          <button class="btn-attach" id="btn-attach" onclick="triggerFileUpload()" title="Lampirkan file">
+            📎
+          </button>
+          <button class="btn-send" id="btn-send" onclick="sendMessage()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <p class="input-hint">AkademiBot bisa salah. Verifikasi info penting dari sumber terpercaya.</p>
+    </div>
+  </main>
+
+  <!-- Overlay untuk mobile sidebar -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
