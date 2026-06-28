@@ -44,12 +44,15 @@ Chatbot AI berbasis **Gemini 2.5 Flash** untuk membantu mahasiswa Informatika da
 ## 📁 Struktur Proyek
 
 ```
+akademi-bot/
 ├── public/
-│   ├── index.html    # Frontend
-│   ├── style.css     # Styling (Dark Academic Theme)
-│   └── script.js     # Logic frontend
-├── package.json      # Dependencies & scripts
-└── README.md         # Dokumentasi ini
+│   ├── index.html        # Tampilan frontend chatbot
+│   ├── style.css         # Styling dark academic theme
+│   └── script.js         # Logic frontend (kirim pesan, render markdown)
+├── index.js              # Server Express + endpoint Gemini API
+├── package.json          # Dependencies & scripts npm
+├── package-lock.json     # Lock versi dependencies
+└── README.md             # Dokumentasi proyek
 ```
 
 ## 🎨 Use Case & Parameter Kreatif
