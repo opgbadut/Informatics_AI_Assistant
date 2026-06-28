@@ -22,46 +22,6 @@ Chatbot AI berbasis **Gemini 2.5 Flash** untuk membantu mahasiswa Informatika da
 | Upload   | Multer (multipart/form-data)      |
 | Render   | Marked.js + Highlight.js          |
 
-## 🚀 Cara Menjalankan
-
-### 1. Clone Repository
-
-```bash
-git clone https://github.com/username/akademi-bot.git
-cd akademi-bot
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Konfigurasi API Key
-
-Salin file environment dan isi API Key:
-
-```bash
-cp .env.example .env
-```
-
-Buka `.env` dan isi:
-
-```
-GEMINI_API_KEY=your_api_key_from_google_ai_studio
-PORT=3000
-```
-
-> 💡 Dapatkan API Key gratis di [Google AI Studio](https://aistudio.google.com/)
-
-### 4. Jalankan Server
-
-```bash
-npm start
-```
-
-Buka browser ke: **http://localhost:3000**
-
 ## 📡 API Endpoints
 
 | Method | Endpoint              | Deskripsi                     |
@@ -84,14 +44,10 @@ Buka browser ke: **http://localhost:3000**
 ## 📁 Struktur Proyek
 
 ```
-akademi-bot/
-├── index.js          # Server Express + Endpoint API
 ├── public/
-│   ├── index.html    # Frontend utama
+│   ├── index.html    # Frontend
 │   ├── style.css     # Styling (Dark Academic Theme)
 │   └── script.js     # Logic frontend
-├── .env.example      # Template konfigurasi
-├── .gitignore        # File yang tidak di-commit
 ├── package.json      # Dependencies & scripts
 └── README.md         # Dokumentasi ini
 ```
@@ -115,7 +71,7 @@ akademi-bot/
 
 ## 👤 Author
 
-**Naufal** — Mahasiswa S1 Informatika, UIN Sunan Kalijaga Yogyakarta
+**Naufal Aqiilah Noor Amarullah** — Mahasiswa S1 Informatika, UIN Sunan Kalijaga Yogyakarta
 
 ---
 
